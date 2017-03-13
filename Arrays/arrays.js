@@ -1,4 +1,4 @@
-let visualArrays = [];
+let flattenedNodes = [];
 
 let hue = 0;
 
@@ -7,11 +7,20 @@ function setup() {
 
 	colorMode(HSB);
 
+	let visualArrays = [];
 	for (let i = 0; i < 20; ++i) {
 		let visualArray = new VisualArray();
 		visualArray.createNodes(30, 50, 30 * i + 100, 20, 20);
 		visualArrays.push(visualArray);
 	}
+
+	// Get the nodes from each visualArray into one array.
+	let allNodes = _.map(visualArrays, visualArray => {
+		return visualArray.getNodes();
+	});
+
+	// Flatten the node array so we only have to use one for loop to display nodes.
+	flattenedNodes = _.flatten(allNodes);
 
 	frameRate(60);
 
@@ -21,14 +30,6 @@ function setup() {
 }
 
 function draw() {
-
-	// Get the nodes from each visualArray into one array.
-	let allNodes = _.map(visualArrays, visualArray => {
-		return visualArray.getNodes();
-	});
-
-	// Flatten the node array so we only have to use one for loop to display nodes.
-	let flattenedNodes = _.flatten(allNodes);
 
 	++hue;
 	hue %= 360;
